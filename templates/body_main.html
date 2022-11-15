@@ -1,0 +1,6 @@
+    <main>
+        {% include "body_first_article_dynamic.html" %}
+        {% for s in stats -%}
+        {% include "body_article.html" %}
+        {% endfor %}
+    </main>

@@ -1,0 +1,24 @@
+[package]
+name = "whatbpm"
+version = "1.0.0"
+authors = ["Sergey Grishakov <sergree@vk.com>"]
+categories = ["multimedia", "multimedia::audio", "science", "text-processing", "visualization"]
+description = "💓 Today's Trending Values for EDM Production"
+edition = "2021"
+homepage = "https://sergree.github.io/whatbpm/"
+keywords = ["bpm", "key", "beatport", "music", "analytics"]
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/sergree/whatbpm"
+
+[dependencies]
+anyhow = "1.0"
+chrono = "0.4"
+comrak = "0.14.0"
+lazy_static = "1.4.0"
+reqwest = { version = "0.11", features = ["json"] }
+scraper = "0.13.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+serde_with = { version = "2.0", features = ["chrono_0_4"] }
+tera = "1"
+tokio = { version = "1.21.2", features = ["full"] }

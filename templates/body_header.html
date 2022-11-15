@@ -1,0 +1,14 @@
+    <header id="welcome">
+        <div>
+            <h1 itemprop="name"><a itemprop="relatedLink" href="{{ whatbpm_repo_url | safe }}" target="_blank">💓 <em>What</em><strong>BPM</strong></a></h1>
+            <p itemprop="abstract" class="slogan">Today's Trending <strong>Values</strong> for EDM Production</p>
+            <p>
+                <small>
+                    Created by
+                    <span itemscope itemprop="reviewedBy author editor maintainer" itemtype="https://schema.org/Person"><a itemprop="url" href="{{ sergree_url | safe }}" target="_blank"><span itemprop="name">Sergree</span></a></span>, the author of
+                    <span itemscope itemprop="mentions" itemtype="https://schema.org/Thing"><a itemprop="url" href="{{ matchering_url | safe }}" target="_blank"><span itemprop="name">Matchering</span></a></span>
+                </small>
+            </p>
+            <p><small><i>Updated at <time itemprop="lastReviewed dateModified" datetime="{{ updated_at | field_datetime }}">{{ updated_at | human_datetime }}</time></i></small></p>
+        </div>
+    </header>

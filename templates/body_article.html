@@ -1,0 +1,49 @@
+{% import "body_section_macros.html" as macros -%}
+{% set meta = s.meta -%}
+{% set bpms = s.folded.bpm -%}
+{% set root_notes = s.folded.root_note -%}
+{% set keys = s.folded.key -%}
+{% set labels = s.folded.label -%}
+{% set genres = s.folded.genre -%}
+{% set average_duration = s.folded.average_duration -%}
+{% set average_bar_count = s.folded.average_bar_count.count -%}
+{% set first_top_bpm = s.folded.average_bar_count.bpm -%}
+{% set genre_name = meta.common_genre | default(value="General") -%}
+{% if loop.index is odd -%}
+{% set article_class = "mbg" -%}
+{% set section_div_class = "sbg" -%}
+{% else -%}
+{% set article_class = "sbg" -%}
+{% set section_div_class = "mbg" -%}
+{% endif -%}
+        <article class="{{ article_class }}">
+            <a class="anchor" id="{{ genre_name | slugify }}"></a>
+            <div>
+                <h2>{{ genre_name }}</h2>
+                <p><i>Updated at <time datetime="{{ updated_at | field_datetime }}">{{ updated_at | human_datetime }}</time></i></p>
+                {{ macros::section(label="BPM", items=bpms, main_color=section_div_class, secondary_color=article_class, genre_name=genre_name) }}
+                {{ macros::section(label="Root Note", items=root_notes, main_color=section_div_class, secondary_color=article_class, genre_name=genre_name) }}
+                {{ macros::section(label="Key", items=keys, main_color=section_div_class, secondary_color=article_class, genre_name=genre_name) }}
+                {{ macros::section(label="Label", items=labels, main_color=section_div_class, secondary_color=article_class, genre_name=genre_name) }}
+                {% if genres -%}
+                {{ macros::section(label="Genre", items=genres, main_color=section_div_class, secondary_color=article_class, genre_name=genre_name) }}
+                {% endif %}
+                <section itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
+                    <h3>⏲️ Average Duration<span class="share"><button>🎁<span class="cut-button"> Share</span></button></span></h3>
+                    <p><small><i itemprop="name">{{ human_question(entity="Average Duration", genre=genre_name) }}</i></small></p>
+                    <div class="items">
+                        <div class="item {{ section_div_class }}">
+                            <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" class="inner {{ article_class }}">
+                                <p itemprop="text">{{ average_duration | date(format="%M:%S") }}</p>
+                                <p class="inner-extra">or {{ average_bar_count }} bars at {{ first_top_bpm }} bpm</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <p>If you find it useful, you may:</p>
+                <a {% if loop.index == 1 %}itemprop="significantLink"{% endif %} href="{{ bmc_url | safe }}" target="_blank">
+                    <img src="{{ bmc_image_url | safe }}" alt="Buy Me A Coffee">
+                </a>
+                <p>Based on <a itemprop="isBasedOn" href="{{ meta.based_on }}" target="_blank">{{ genre_name }} Beatport Top 100</a></p>
+            </div>
+        </article>

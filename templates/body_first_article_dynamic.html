@@ -1,0 +1,6 @@
+{% set youtube_html = '<!--<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Rick Astley - Never Gonna Give You Up (Official Music Video)" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>-->' -%}
+        <article class="sbg">
+            <div itemprop="description" class="md">
+{{ youtube_html | welcome | safe }}
+            </div>
+        </article>

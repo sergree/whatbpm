@@ -1,0 +1,22 @@
+    <div id="ghost" class="hidden">
+        <div>
+            <p>💓<span> <em>What</em><strong>BPM</strong></span></p>
+            <a href="#welcome">☝️<span id="back"> Back</span></a>
+        </div>
+    </div>
+    <nav itemprop="breadcrumb" itemscope itemtype="https://schema.org/BreadcrumbList">
+        <details id="genres">
+            <summary aria-controls="genre-menu">Genres</summary>
+            <ul id="genre-menu">
+                {% for s in stats -%}
+                {% set genre_name = s.meta.common_genre | default(value="General") -%}
+                <li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+                    <a itemprop="item" href="#{{ genre_name | slugify }}">
+                        <span itemprop="name">{{ genre_name }}</span>
+                    </a>
+                    <meta itemprop="position" content="1">
+                </li>
+                {% endfor %}
+            </ul>
+        </details>
+    </nav>

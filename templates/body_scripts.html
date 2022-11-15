@@ -1,0 +1,193 @@
+    <script>
+        "use strict";
+
+        // Credits to https://smolcss.dev
+        const genres = document.getElementById("genres");
+        document.addEventListener("keydown", (e => {
+            genres.open && "Escape" === e.key && (genres.open = false)
+        }));
+        document.body.addEventListener("mousedown", (e => {
+            genres.open && !("A" === e.target.nodeName || "SPAN" === e.target.nodeName) && "SUMMARY" !== e.target.nodeName && (genres.open = false)
+        }));
+        window.addEventListener("hashchange", (() => {
+            genres.open && (genres.open = false)
+        }));
+
+        // Credits to https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
+        let ghost = document.getElementById("ghost");
+
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            let maxHeight = window.innerHeight;
+            if (document.body.scrollTop > maxHeight || document.documentElement.scrollTop > maxHeight) {
+                if (ghost.classList.contains("hidden")) {
+                    ghost.classList.remove("hidden");
+                }
+            } else {
+                if (!ghost.classList.contains("hidden")) {
+                    ghost.classList.add("hidden");
+                }
+            }
+        }
+
+        const stripEmojis = (str) =>
+            str
+                .replace(
+                    /[^\p{L}\p{N}\p{P}\p{Z}^$\n]/gu,
+                    ''
+                )
+                .replace(/\s+/g, ' ')
+                .trim();
+
+        const wordsRe = /\w+/g;
+        const atLeastOneCharRe = /[a-z]/;
+        const hashtagsStart = ["#whatbpm"];
+        const hashtagsFinish = ["#edm", "#dj", "#producer"];
+
+        class BetterHashtagRule {
+
+            constructor(replaceWhat, replaceWith) {
+                this.replaceWhat = replaceWhat.split(" ");
+                this.replaceWith = replaceWith.split(" ");
+            }
+
+            replace(input) {
+                for (let item of this.replaceWhat) {
+                    if (!input.includes(item)) {
+                        return input;
+                    }
+                }
+                let filtered = input.filter(ht => !this.replaceWhat.includes(ht));
+                filtered.push(...this.replaceWith);
+                return filtered;
+            }
+
+        }
+
+        function r(replaceWhat, replaceWith) {
+            return new BetterHashtagRule(replaceWhat, replaceWith);
+        }
+
+        // Credits to https://best-hashtags.com/
+        const betterHashtagRules = [
+            r("140 deep dubstep", "deepdubstep dubstep"),
+            r("afro house", "afrohouse house"),
+            r("bass club", "bassclub"),
+            r("bass house", "basshouse house"),
+            r("uk bass", "ukbass"),
+            r("electro pop", "electropop"),
+            r("electro classic detroit modern", "electro detroitelectro"),
+            r("deep house", "deephouse house"),
+            r("drum bass", "dnb drumandbass"),
+            r("funky house", "funkyhouse house"),
+            r("hard dance", "harddance hardstyle"),
+            r("hard techno", "hardtechno techno"),
+            r("indie dance", "indiedance dance"),
+            r("jackin house", "jackinhouse house"),
+            r("melodic house techno", "melodichouse melodictechno techno house"),
+            r("deep tech", "deeptech"),
+            r("nu disco", "nudisco disco"),
+            r("organic house", "organichouse house"),
+            r("progressive house", "progressivehouse progressive house"),
+            r("psy trance", "psytrance trance"),
+            r("tech house", "techhouse techno house"),
+            r("peak time", "peaktime"),
+            r("driving techno", "drivingtechno techno"),
+            r("raw techno", "rawtechno techno"),
+            r("deep techno", "deeptechno techno"),
+            r("hypnotic techno", "hypnotictechno techno"),
+            r("trance", "trance progressive"),
+            r("trap wave", "trap trapwave"),
+            r("uk garage bassline", "ukgarage ukg ukbassline"),
+            r("house", "housemusic"),
+            r("electronic", "rave"),
+            r("music", ""), // Too broad
+        ];
+
+        function getGenreHashtags(genreName) {
+            let phrase = genreName.toLowerCase();
+
+            let words = phrase.match(wordsRe);
+
+            for (let rule of betterHashtagRules) {
+                words = rule.replace(words);
+            }
+
+            let hashtagsGenre = [];
+            words.forEach((element) => {
+                if (atLeastOneCharRe.test(element)) {
+                    hashtagsGenre.push(`#${element}`);
+                }
+            });
+
+            return hashtagsGenre;
+        }
+
+        let processedHashtags = new Map();
+
+        function addHashtags(text, genreName) {
+            if (processedHashtags.has(genreName)) {
+                let processed = processedHashtags.get(genreName);
+                return `${text} ${processed}`;
+            } else {
+                let hashtags = [];
+                hashtags.push(...hashtagsStart);
+                let hashtagsGenre = getGenreHashtags(genreName);
+                hashtags.push(...hashtagsGenre);
+                hashtags.push(...hashtagsFinish);
+                hashtags = [...new Set(hashtags)];
+
+                let processed = hashtags.join(" ");
+                processedHashtags.set(genreName, processed);
+                return `${text} ${processed}`;
+            }
+        }
+
+        // Credits to https://css-tricks.com/how-to-use-the-web-share-api
+        document.querySelectorAll(".share").forEach(function (button) {
+            if (navigator.share) {
+                let article = button.closest("article");
+                let genreId = article.querySelector("a.anchor").getAttribute("id");
+                let genreName = article.querySelector("div > h2").textContent;
+
+                if (genreName === "General") {
+                    genreName = "Electronic Dance Music";
+                }
+
+                let typeName = stripEmojis(button.previousSibling.nodeValue);
+
+                let text = `Best ${typeName} for ${genreName}`;
+
+                if (typeName === "Average Duration") {
+                    text = `${genreName} ${typeName}`;
+                } else if (typeName === "Genre" || typeName === "Label") {
+                    text = `Best ${genreName} ${typeName}`;
+                }
+
+                text = addHashtags(text, genreName);
+
+                let url = `{{ whatbpm_url | safe }}#${genreId}`;
+
+                button.addEventListener("click", () => {
+                    navigator.share({
+                        title: "Check out WhatBPM!",
+                        text: text,
+                        url: url
+                    }).then(() => {
+                        console.log("Thanks for sharing!");
+                    })
+                        .catch(console.error);
+                });
+            } else {
+                button.style.display = "none";
+            }
+        });
+
+        document.querySelectorAll("time").forEach(function (time) {
+            let dt = new Date(time.getAttribute("datetime"));
+            time.innerText = `${dt.toLocaleDateString()}`;
+        });
+    </script>
