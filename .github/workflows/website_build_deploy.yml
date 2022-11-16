@@ -37,10 +37,6 @@ jobs:
         if: github.repository_owner == 'sergree'
         run: cargo run --release
 
-#      - name: Minify
-#        if: github.repository_owner == 'sergree'
-#        uses: anthonyftwang/minify-action@v1.0.1
-
       - name: Deploy
         if: github.repository_owner == 'sergree'
         uses: peaceiris/actions-gh-pages@v3
