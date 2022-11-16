@@ -1,5 +1,4 @@
 {% macro section(label, items, main_color, secondary_color, genre_name) -%}
-{% set COUNT_THRESHOLD = 4 -%}
 {% set ITEM_MAX = 3 -%}
                 <section itemscope itemprop="mainEntity" itemtype="https://schema.org/Question">
                     {% if label == "BPM" -%}
@@ -24,12 +23,9 @@
                     <h3>{{ emoji }}{{ label }}<span class="share"><button>🎁 Share</button></span></h3>
                     <p><small><i itemprop="name">{{ human_question(entity=label, genre=genre_name) }}</i></small></p>
                     <div class="items">
-                        {% set answer_is_set = false -%}
                         {% for item in items -%}
 
                         {% if loop.index > ITEM_MAX %}{% break %}{% endif -%}
-                        {% set value_count = item.values | length -%}
-                        {% if item.count < COUNT_THRESHOLD and loop.index > 1 %}{% break %}{% endif -%}
 
                         {% if loop.index == 1 -%}
                             {% set place_str = "🥇 " -%}
@@ -41,10 +37,9 @@
                             {% set place_str = "" -%}
                         {% endif -%}
                         <div class="item {{ main_color }}">
-                            <p>{{ place_str }}{{ item.count }}%{% if value_count > 1 %} per {{ label | lower }}{% endif %}</p>
-                            {% for value in item.values -%}
-                            {%- if not answer_is_set %}
-                            {%- set_global answer_is_set = true %}
+                            <p>{{ place_str }}{{ item.weighted_count.count }}%</p>
+                            {% set value = item.value -%}
+                            {%- if loop.index == 1 %}
                             <div itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer" class="inner {{ secondary_color }}">
                                 <p itemprop="text">{{ value }}{{ units }}</p>
                                 {%- if label == "Key" %}
@@ -59,7 +54,6 @@
                                 {%- endif %}
                             </div>
                             {%- endif %}
-                            {%- endfor %}
                         </div>
                         {% endfor %}
                     </div>

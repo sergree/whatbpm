@@ -8,6 +8,7 @@ mod genre;
 mod key;
 mod markdown;
 mod question_factory;
+mod score;
 mod stats;
 mod track;
 mod view;
@@ -15,6 +16,7 @@ mod web;
 
 use crate::genre::Genre;
 use crate::key::{Key, RootNote};
+use crate::score::get_score;
 use crate::stats::{Meta, StatsVec};
 use crate::track::{TopTrackVec, Track};
 use crate::web::TopPage;

@@ -1,13 +1,13 @@
 {% import "body_section_macros.html" as macros -%}
 {% set meta = s.meta -%}
-{% set bpms = s.folded.bpm -%}
-{% set root_notes = s.folded.root_note -%}
-{% set keys = s.folded.key -%}
-{% set labels = s.folded.label -%}
-{% set genres = s.folded.genre -%}
-{% set average_duration = s.folded.average_duration -%}
-{% set average_bar_count = s.folded.average_bar_count.count -%}
-{% set first_top_bpm = s.folded.average_bar_count.bpm -%}
+{% set bpms = s.standard.bpm -%}
+{% set root_notes = s.standard.root_note -%}
+{% set keys = s.standard.key -%}
+{% set labels = s.standard.label -%}
+{% set genres = s.standard.genre -%}
+{% set average_duration = s.standard.average_duration -%}
+{% set average_bar_count = s.standard.average_bar_count.count -%}
+{% set first_top_bpm = s.standard.average_bar_count.bpm -%}
 {% set genre_name = meta.common_genre | default(value="General") -%}
 {% if loop.index is odd -%}
 {% set article_class = "mbg" -%}

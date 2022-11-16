@@ -1,3 +1,4 @@
+use crate::get_score;
 use crate::Key;
 use crate::RootNote;
 use crate::TopTrackVec;
@@ -6,7 +7,6 @@ use chrono::prelude::*;
 use chrono::Duration;
 use serde::Serialize;
 use serde_with::{serde_as, DurationSeconds, TimestampSeconds};
-use std::cmp::Reverse;
 use std::collections::{BTreeMap, HashMap};
 
 const LOWEST_BPM: u16 = 91;
@@ -54,10 +54,16 @@ impl AverageBarCount {
     }
 }
 
+#[derive(Serialize, PartialEq, PartialOrd, Clone, Copy, Default, Debug)]
+pub struct WeightedCount {
+    pub score: f32,
+    pub count: usize,
+}
+
 #[derive(Serialize, Debug)]
 pub struct StandardItem<T: Serialize> {
     pub value: T,
-    pub count: usize,
+    pub weighted_count: WeightedCount,
 }
 
 #[serde_as]
@@ -79,37 +85,43 @@ impl From<Vec<Track>> for Standard {
         // So we can safely .unwrap() here
         let make_genre_stats = tracks.first().unwrap().specific_genre.is_some();
 
-        let mut bpm_hm: HashMap<u16, usize> = HashMap::new();
-        let mut root_note_hm: HashMap<RootNote, usize> = HashMap::new();
-        let mut key_hm: HashMap<Key, usize> = HashMap::new();
-        let mut label_hm: HashMap<String, usize> = HashMap::new();
-        let mut genre_hm: Option<HashMap<String, usize>> = match make_genre_stats {
+        let mut bpm_hm: HashMap<u16, WeightedCount> = HashMap::new();
+        let mut root_note_hm: HashMap<RootNote, WeightedCount> = HashMap::new();
+        let mut key_hm: HashMap<Key, WeightedCount> = HashMap::new();
+        let mut label_hm: HashMap<String, WeightedCount> = HashMap::new();
+        let mut genre_hm: Option<HashMap<String, WeightedCount>> = match make_genre_stats {
             true => Some(HashMap::new()),
             false => None,
         };
         let mut average_duration: Duration = Duration::milliseconds(0);
         let tracks_len = tracks.len();
 
-        for track in tracks {
-            let bpm = bpm_hm.entry(track.bpm).or_insert(0);
-            *bpm += 1;
-            let root_note = root_note_hm.entry(track.key.root_note.clone()).or_insert(0);
-            *root_note += 1;
-            let key = key_hm.entry(track.key).or_insert(0);
-            *key += 1;
-            let label = label_hm.entry(track.label).or_insert(0);
-            *label += 1;
+        for (idx, track) in tracks.into_iter().enumerate() {
+            let score = get_score(idx);
+            let bpm = bpm_hm.entry(track.bpm).or_default();
+            bpm.score += score;
+            bpm.count += 1;
+            let root_note = root_note_hm.entry(track.key.root_note.clone()).or_default();
+            root_note.score += score;
+            root_note.count += 1;
+            let key = key_hm.entry(track.key).or_default();
+            key.score += score;
+            key.count += 1;
+            let label = label_hm.entry(track.label).or_default();
+            label.score += score;
+            label.count += 1;
             if let Some(genre_hm) = genre_hm.as_mut() {
                 // If the first track has a special genre, then all the others have too
                 // So we can safely .unwrap() here
-                let genre = genre_hm.entry(track.specific_genre.unwrap()).or_insert(0);
-                *genre += 1;
+                let genre = genre_hm.entry(track.specific_genre.unwrap()).or_default();
+                genre.score += score;
+                genre.count += 1;
             }
             average_duration = average_duration + track.duration;
         }
 
-        let mut bpm_hm_fixed: HashMap<u16, usize> = HashMap::new();
-        for (bpm_initial, count) in bpm_hm {
+        let mut bpm_hm_fixed: HashMap<u16, WeightedCount> = HashMap::new();
+        for (bpm_initial, weighted_count) in bpm_hm {
             let bpm_fixed = if bpm_initial < LOWEST_BPM {
                 bpm_initial * 2
             } else if bpm_initial >= HIGHEST_BPM {
@@ -118,29 +130,45 @@ impl From<Vec<Track>> for Standard {
                 bpm_initial
             };
 
-            let bpm = bpm_hm_fixed.entry(bpm_fixed).or_insert(0);
-            *bpm += count;
+            let bpm = bpm_hm_fixed.entry(bpm_fixed).or_default();
+            bpm.score += weighted_count.score;
+            bpm.count += weighted_count.count;
         }
 
         let bpm: Vec<StandardItem<_>> = bpm_hm_fixed
             .into_iter()
-            .map(|(value, count)| StandardItem { value, count })
+            .map(|(value, weighted_count)| StandardItem {
+                value,
+                weighted_count,
+            })
             .collect();
         let root_note: Vec<StandardItem<_>> = root_note_hm
             .into_iter()
-            .map(|(value, count)| StandardItem { value, count })
+            .map(|(value, weighted_count)| StandardItem {
+                value,
+                weighted_count,
+            })
             .collect();
         let key: Vec<StandardItem<_>> = key_hm
             .into_iter()
-            .map(|(value, count)| StandardItem { value, count })
+            .map(|(value, weighted_count)| StandardItem {
+                value,
+                weighted_count,
+            })
             .collect();
         let label: Vec<StandardItem<_>> = label_hm
             .into_iter()
-            .map(|(value, count)| StandardItem { value, count })
+            .map(|(value, weighted_count)| StandardItem {
+                value,
+                weighted_count,
+            })
             .collect();
         let genre: Option<Vec<StandardItem<_>>> = genre_hm.map(|hm| {
             hm.into_iter()
-                .map(|(value, count)| StandardItem { value, count })
+                .map(|(value, weighted_count)| StandardItem {
+                    value,
+                    weighted_count,
+                })
                 .collect()
         });
         average_duration = average_duration / tracks_len as i32;
@@ -166,22 +194,26 @@ impl From<Vec<Track>> for Standard {
 impl Standard {
     fn sort(&mut self) {
         self.bpm.sort_unstable_by_key(|k| k.value);
-        self.bpm.sort_by_key(|k| Reverse(k.count));
+        self.bpm
+            .sort_by(|a, b| b.weighted_count.partial_cmp(&a.weighted_count).unwrap());
 
         self.root_note
             .sort_unstable_by(|a, b| a.value.cmp(&b.value));
-        self.root_note.sort_by_key(|k| Reverse(k.count));
+        self.root_note
+            .sort_by(|a, b| b.weighted_count.partial_cmp(&a.weighted_count).unwrap());
 
         self.key.sort_unstable_by(|a, b| a.value.cmp(&b.value));
-        self.key.sort_by_key(|k| Reverse(k.count));
+        self.key
+            .sort_by(|a, b| b.weighted_count.partial_cmp(&a.weighted_count).unwrap());
 
         self.label
             .sort_unstable_by(|a, b| a.value.to_lowercase().cmp(&b.value.to_lowercase()));
-        self.label.sort_by_key(|k| Reverse(k.count));
+        self.label
+            .sort_by(|a, b| b.weighted_count.partial_cmp(&a.weighted_count).unwrap());
 
         if let Some(genre) = &mut self.genre {
             genre.sort_unstable_by(|a, b| a.value.to_lowercase().cmp(&b.value.to_lowercase()));
-            genre.sort_by_key(|k| Reverse(k.count));
+            genre.sort_by(|a, b| b.weighted_count.partial_cmp(&a.weighted_count).unwrap());
         }
     }
 }
@@ -215,22 +247,22 @@ impl From<&Standard> for Folded {
             standard.genre.as_ref().map(|_| BTreeMap::new());
 
         for item in &standard.bpm {
-            let bpm_vec = bpm_btm.entry(item.count).or_default();
+            let bpm_vec = bpm_btm.entry(item.weighted_count.count).or_default();
             bpm_vec.push(item.value);
         }
 
         for item in &standard.root_note {
-            let root_note_vec = root_note_btm.entry(item.count).or_default();
+            let root_note_vec = root_note_btm.entry(item.weighted_count.count).or_default();
             root_note_vec.push(item.value.clone());
         }
 
         for item in &standard.key {
-            let key_vec = key_btm.entry(item.count).or_default();
+            let key_vec = key_btm.entry(item.weighted_count.count).or_default();
             key_vec.push(item.value.clone());
         }
 
         for item in &standard.label {
-            let label_vec = label_btm.entry(item.count).or_default();
+            let label_vec = label_btm.entry(item.weighted_count.count).or_default();
             label_vec.push(item.value.to_string());
         }
 
@@ -238,7 +270,7 @@ impl From<&Standard> for Folded {
             // We have already checked the existence of the standard.genre above
             // So we can safely .unwrap() here
             for item in standard.genre.as_ref().unwrap() {
-                let genre_vec = genre_btm.entry(item.count).or_default();
+                let genre_vec = genre_btm.entry(item.weighted_count.count).or_default();
                 genre_vec.push(item.value.to_string());
             }
         }
