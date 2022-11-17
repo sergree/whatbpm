@@ -24,6 +24,12 @@ jobs:
       - name: Clippy check
         run: cargo clippy -- -D warnings
 
+      - name: Build
+        run: cargo build --release
+
+      - name: Test
+        run: cargo test
+
       - name: Publish
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN  }}
