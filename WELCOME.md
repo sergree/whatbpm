@@ -30,5 +30,5 @@ You can help the project by [buying me a coffee][BMC]. ☕
 Thank you for your support! 💓
 
 [Harmonic mixing]: https://mixedinkey.com/harmonic-mixing-guide/
-[FAQ]: https://github.com/sergree/whatbpm/wiki
+[FAQ]: https://github.com/sergree/whatbpm/wiki/FAQ
 [BMC]: https://boosty.to/sergree
