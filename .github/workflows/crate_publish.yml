@@ -28,7 +28,7 @@ jobs:
         run: cargo build --release
 
       - name: Test
-        run: cargo test
+        run: cargo test --release
 
       - name: Publish
         env:
