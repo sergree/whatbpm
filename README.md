@@ -29,6 +29,10 @@ Please follow the [FAQ] section. There is an in-depth description of the project
 
 [//]: # (Thanks, guys!)
 
+## For Developers
+
+You can freely use [WhatBPM] data in your applications. We also provide historical data. Follow the [For Developers] section for details.
+
 [//]: # (# Backers)
 
 [//]: # (Our project is supported by these wonderful people.)
@@ -64,6 +68,7 @@ Thank you for the [Open Source Development License]!
 [GitHub Actions]: https://github.com/features/actions
 [GitHub Pages]: https://pages.github.com/
 [FAQ]: https://github.com/sergree/whatbpm/wiki/FAQ
+[For Developers]: https://github.com/sergree/whatbpm/wiki/For-Developers
 [WebStorm]: https://www.jetbrains.com/webstorm/
 [JetBrains]: https://www.jetbrains.com/
 [Open Source Development License]:  https://jb.gg/OpenSourceSupport
