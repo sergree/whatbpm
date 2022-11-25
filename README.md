@@ -13,6 +13,10 @@ This is the repository for the [WhatBPM] website.
 [WhatBPM] is a daily updated information resource for [EDM] producers, answering questions such as
 what [BPM] / [root note] / [key] / [track length] to use for a new production, what [labels][label] to look at, what [EDM] genres are the most trending, and so on.
 
+Watch [the video][Video]:
+
+[![WhatBPM Promo Video](https://raw.githubusercontent.com/sergree/whatbpm/main/images/yt_thumbnail.png)][Video]
+
 - 🦀 Made with [Rust]
 - 🧑‍🍳 Backed by [GitHub Actions]
 - 🍽️ Served by [GitHub Pages]
@@ -64,6 +68,7 @@ Thank you for the [Open Source Development License]!
 [key]: https://en.wikipedia.org/wiki/Key_(music)
 [track length]: https://en.wikipedia.org/wiki/Duration_(music)
 [label]: https://en.wikipedia.org/wiki/Record_label
+[Video]: https://www.youtube.com/watch?v=dc8o9dlAjnA "WhatBPM - Best BPM / Key / Root Note for Your EDM Production"
 [Rust]: https://www.rust-lang.org/
 [GitHub Actions]: https://github.com/features/actions
 [GitHub Pages]: https://pages.github.com/
