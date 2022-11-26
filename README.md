@@ -38,13 +38,13 @@ Thanks, guys!
 
 You can freely use [WhatBPM] data in your applications. We also provide historical data. Follow the [For Developers] section for details.
 
-[//]: # (# Backers)
+# Backers
 
-[//]: # (Our project is supported by these wonderful people.)
+Our project is supported by these wonderful people.
 
-[//]: # (⌛ *Coming soon...*)
+- [**nanobii**: *Found this on /r/edmproduction and it's a pretty neat resource*](https://twitter.com/nanobii/status/1596434980540153856)
 
-[//]: # (Thank you!)
+Thank you!
 
 ## A Coffee
 
