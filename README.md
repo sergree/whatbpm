@@ -30,6 +30,7 @@ Please follow the [FAQ] section. There is an in-depth description of the project
 We are mentioned in the press.
 
 - [**KVR**: *Sergree releases WhatBPM - Free Information Tool for EDM Producers*](https://www.kvraudio.com/news/sergree-releases-whatbpm---free-information-tool-for-edm-producers-56575)
+- [**SAMESOUND**: *Российский программист запустил сервис WhatBPM - с ним можно изучить текущие тренды в жанре EDM*](https://samesound.ru/soft/168555-rossijskij-programmist-zapustil-servis-whatbpm-s-nim-mozhno-uznat-temp-kompozicii-i-izuchit-tekushhie-trendy-v-zhanre-edm)
 
 Thanks, guys!
 
