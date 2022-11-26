@@ -25,13 +25,13 @@ Watch [the video][Video]:
 
 Please follow the [FAQ] section. There is an in-depth description of the project and its features.
 
-[//]: # (## Press)
+## Press
 
-[//]: # (We are mentioned in the press.)
+We are mentioned in the press.
 
-[//]: # (⌛ *Coming soon...*)
+- [**KVR**: *Sergree releases WhatBPM - Free Information Tool for EDM Producers*](https://www.kvraudio.com/news/sergree-releases-whatbpm---free-information-tool-for-edm-producers-56575)
 
-[//]: # (Thanks, guys!)
+Thanks, guys!
 
 ## For Developers
 
