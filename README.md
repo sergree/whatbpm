@@ -43,6 +43,7 @@ You can freely use [WhatBPM] data in your applications. We also provide historic
 Our project is supported by these wonderful people.
 
 - [**nanobii**: *Found this on /r/edmproduction and it's a pretty neat resource*](https://twitter.com/nanobii/status/1596434980540153856)
+- [**SLAVA BASYUL**: *Hi) Respect for WhatBPM and Matchering!👍🏻*](https://www.youtube.com/channel/UCsbS60o4lEjXcicQiMi912A)
 
 Thank you!
 
