@@ -4,6 +4,7 @@
 
 [![crates.io](https://img.shields.io/crates/v/whatbpm)](https://crates.io/crates/whatbpm)
 [![License](https://img.shields.io/crates/l/whatbpm)](https://crates.io/crates/whatbpm)
+[![Mentioned in Awesome Rust](https://awesome.re/mentioned-badge.svg)](https://github.com/rust-unofficial/awesome-rust)
 [![CI](https://github.com/sergree/whatbpm/actions/workflows/website_build_deploy.yml/badge.svg)](https://github.com/sergree/whatbpm/actions)
 
 ## 💓 Today's Trending Values for EDM Production 
