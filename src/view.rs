@@ -59,7 +59,7 @@ fn format_datetime(filter_name: &str, value: &Value, pattern: &str) -> TeraResul
         Utc,
     );
     let formatted = format!("{}", datetime.format(pattern));
-    Ok(to_value(&formatted).unwrap())
+    Ok(to_value(formatted).unwrap())
 }
 
 fn human_datetime(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
@@ -85,7 +85,7 @@ fn render_welcome_markdown(value: &Value, _: &HashMap<String, Value>) -> TeraRes
             },
         ],
     );
-    Ok(to_value(&rendered).unwrap())
+    Ok(to_value(rendered).unwrap())
 }
 
 fn key_extra_info(value: &Value, _: &HashMap<String, Value>) -> TeraResult<Value> {
