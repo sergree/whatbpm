@@ -1,6 +1,6 @@
 [package]
 name = "whatbpm"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["Sergey Grishakov <sergree@vk.com>"]
 categories = ["multimedia", "multimedia::audio", "science", "text-processing", "visualization"]
 description = "💓 Today's Trending Values for EDM Production"
