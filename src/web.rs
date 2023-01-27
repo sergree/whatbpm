@@ -8,8 +8,8 @@ const TOP_PATH: &str = "/top-100";
 
 async fn get(path: &str, add_top_path: bool) -> Result<(String, String)> {
     let url = match add_top_path {
-        true => format!("{}{}{}", BEATPORT_URL, path, TOP_PATH),
-        false => format!("{}{}", BEATPORT_URL, path),
+        true => format!("{BEATPORT_URL}{path}{TOP_PATH}"),
+        false => format!("{BEATPORT_URL}{path}"),
     };
 
     println!("Getting  {} ...", &url);

@@ -36,7 +36,7 @@ lazy_static! {
         let mut tera = match Tera::new(TEMPLATE_PATH) {
             Ok(t) => t,
             Err(e) => {
-                println!("Parsing error(s): {}", e);
+                println!("Parsing error(s): {e}");
                 ::std::process::exit(1);
             }
         };
