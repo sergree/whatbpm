@@ -26,6 +26,8 @@ Watch [the video][Video]:
 
 Please follow the [FAQ] section. There is an in-depth description of the project and its features.
 
+If you would like to learn **how WhatBPM was made**, please read [this Habr article](https://habr.com/ru/post/714538/).
+
 ## Press
 
 We are mentioned in the press.
