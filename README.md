@@ -1,4 +1,4 @@
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://boosty.to/sergree)
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://pip.me/sergree)
 
 # ![WhatBPM Logo](https://raw.githubusercontent.com/sergree/whatbpm/main/images/whatbpm_logo.png)
 
@@ -54,7 +54,7 @@ Thank you!
 
 If our website saved your time or money, you may:
 
-[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://boosty.to/sergree)
+[![Buy Me A Coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://pip.me/sergree)
 
 **Thank you!**
 

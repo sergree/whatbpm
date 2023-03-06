@@ -31,4 +31,4 @@ Thank you for your support! 💓
 
 [Harmonic mixing]: https://mixedinkey.com/harmonic-mixing-guide/
 [FAQ]: https://github.com/sergree/whatbpm/wiki/FAQ
-[BMC]: https://boosty.to/sergree
+[BMC]: https://pip.me/sergree
