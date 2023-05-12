@@ -354,7 +354,11 @@ impl From<Vec<TopTrackVec>> for StatsVec {
                 .map(|s| s.meta.updated_at)
                 .max()
                 .unwrap_or_default(),
-            stats: top_track_vecs.into_iter().map(Stats::from).collect(),
+            stats: top_track_vecs
+                .into_iter()
+                .filter(|ttv| !ttv.tracks.is_empty())
+                .map(Stats::from)
+                .collect(),
         }
     }
 }
